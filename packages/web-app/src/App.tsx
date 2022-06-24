@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { trpc } from './trpc';
 
-import './index.scss';
-
 const client = new QueryClient();
 
 const AppContent = () => {
@@ -28,28 +26,16 @@ const AppContent = () => {
   };
 
   return (
-    <div className='max-w-6xl mx-auto mt-10 text-3xl'>
+    <div>
       <div>
         {(getMessages.data ?? []).map((row) => (
           <div key={row.message}>{JSON.stringify(row)}</div>
         ))}
       </div>
 
-      <div className='mt-10'>
-        <input
-          type='text'
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
-          className='w-full p-5 border-2 border-gray-300 rounded-lg'
-          placeholder='User'
-        />
-        <input
-          type='text'
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className='w-full p-5 border-2 border-gray-300 rounded-lg'
-          placeholder='Message'
-        />
+      <div>
+        <input type='text' value={user} onChange={(e) => setUser(e.target.value)} placeholder='User' />
+        <input type='text' value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Message' />
       </div>
 
       <button onClick={onAdd}>Add message</button>
