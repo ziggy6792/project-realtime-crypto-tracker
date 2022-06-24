@@ -7,7 +7,7 @@
     "watch": "ttsc -w",
     "start:build": "node-dev dist/index.js --no-notify",
     "typecheck": "tsc --noEmit",
-    "build": "npx ttsc --p ./tsconfig.json"
+    "build": "ttsc"
   },
   "main": "dist/index.js",
   "dependencies": {
