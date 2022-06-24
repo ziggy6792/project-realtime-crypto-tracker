@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { trpc } from "./trpc";
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { trpc } from './trpc';
 
-import "./index.scss";
+import './index.scss';
 
 const client = new QueryClient();
 
 const AppContent = () => {
-  const getMessages = trpc.useQuery(["getMessages"]);
+  const getMessages = trpc.useQuery(['getMessages']);
 
-  const [user, setUser] = useState("");
-  const [message, setMessage] = useState("");
-  const addMessage = trpc.useMutation("addMessage");
+  const [user, setUser] = useState('');
+  const [message, setMessage] = useState('');
+  const addMessage = trpc.useMutation('addMessage');
   const onAdd = () => {
     addMessage.mutate(
       {
@@ -21,34 +21,34 @@ const AppContent = () => {
       },
       {
         onSuccess: () => {
-          client.invalidateQueries(["getMessages"]);
+          client.invalidateQueries(['getMessages']);
         },
       }
     );
   };
 
   return (
-    <div className="mt-10 text-3xl mx-auto max-w-6xl">
+    <div className='max-w-6xl mx-auto mt-10 text-3xl'>
       <div>
         {(getMessages.data ?? []).map((row) => (
           <div key={row.message}>{JSON.stringify(row)}</div>
         ))}
       </div>
 
-      <div className="mt-10">
+      <div className='mt-10'>
         <input
-          type="text"
+          type='text'
           value={user}
           onChange={(e) => setUser(e.target.value)}
-          className="p-5 border-2 border-gray-300 rounded-lg w-full"
-          placeholder="User"
+          className='w-full p-5 border-2 border-gray-300 rounded-lg'
+          placeholder='User'
         />
         <input
-          type="text"
+          type='text'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="p-5 border-2 border-gray-300 rounded-lg w-full"
-          placeholder="Message"
+          className='w-full p-5 border-2 border-gray-300 rounded-lg'
+          placeholder='Message'
         />
       </div>
 
@@ -60,7 +60,7 @@ const AppContent = () => {
 const App = () => {
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: "http://localhost:8080/trpc",
+      url: 'http://localhost:8080/trpc',
     })
   );
 
@@ -73,4 +73,4 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById('app'));
