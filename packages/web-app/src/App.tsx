@@ -7,7 +7,6 @@ const client = new QueryClient();
 
 const AppContent = () => {
   const getMessages = trpc.useQuery(['getMessages']);
-
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
   const addMessage = trpc.useMutation('addMessage');

@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
+    "start": "run-p watch start:build",
+    "watch": "ttsc -w",
+    "start:build": "node-dev dist/index.js --no-notify",
     "typecheck": "tsc --noEmit",
     "build": "npx ttsc --p ./tsconfig.json"
   },
@@ -12,14 +14,14 @@
     "@trpc/server": "^9.18.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "npm-run-all": "^4.1.5",
     "zod": "^3.11.6"
   },
   "devDependencies": {
-    "ttypescript": "^1.5.12",
+    "node-dev": "^7.4.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
-    "ts-node": "^10.4.0",
-    "ts-node-dev": "^1.1.8",
+    "ttypescript": "^1.5.12",
     "typescript": "^4.4.4",
     "typescript-transform-paths": "^2.0.0"
   }

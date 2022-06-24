@@ -8,7 +8,7 @@ interface ChatMessage {
   user: string;
   message: string;
 }
-
+//
 const messages: ChatMessage[] = [
   { user: 'user1', message: 'Hello' },
   { user: 'user2', message: 'Hi' },
