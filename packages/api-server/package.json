@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev index.ts"
+    "start": "ts-node-dev index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "main": "index.ts",
   "dependencies": {

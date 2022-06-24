@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "lerna run start --stream --parallel",
+    "typecheck": "lerna run --stream  typecheck",
     "lint": "eslint './packages/**/src/**/*.{ts,tsx}' --fix"
   },
   "workspaces": [
