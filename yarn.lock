@@ -3338,12 +3338,10 @@
   dependencies:
     "@babel/runtime" "^7.9.0"
 
-"@trpc/server@^9.18.0":
-  version "9.18.0"
-  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-9.18.0.tgz#03136197494454b7441e5a3bb08feaf4d2e56d17"
-  integrity sha512-xWBC2+Q5OuJfK4kN9LqvpnncOP3T2I1duc5xDAnYOhhmvnKrfoUQoBReSqA5MohomAB/EDcRVCea2sKoNIoa0g==
-  dependencies:
-    tslib "^2.1.0"
+"@trpc/server@^9.25.3":
+  version "9.25.3"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-9.25.3.tgz#a11ef35f872216a84e2c9c76c56d7e95e703c477"
+  integrity sha512-1LEURCmSGpxx8/0ZtzMpd0hiSB4xGNKJ9DKq6sbPk+bzdACjH9Ujdwca4P6ylxa8HdMel/effwjlCG0Tfx06Lg==
 
 "@trysound/sax@0.2.0":
   version "0.2.0"
@@ -6665,7 +6663,7 @@ express@^4.17.1:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-express@^4.17.3:
+express@^4.17.3, express@^4.18.1:
   version "4.18.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.1.tgz#7797de8b9c72c857b9cd0e14a5eea80666267caf"
   integrity sha512-zZBcOX9TfehHQhtupq57OF8lFZ3UZi08Y97dwFCkD8p9d/d2Y3M+ykKcwaMDEL+4qyUolgBDX6AblpR3fL212Q==
@@ -12807,7 +12805,7 @@ tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.3, tslib@^2.1.0:
+tslib@^2.0.3:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
@@ -12819,7 +12817,7 @@ tsutils@^3.21.0:
   dependencies:
     tslib "^1.8.1"
 
-ttypescript@^1.5.12:
+ttypescript@^1.5.13:
   version "1.5.13"
   resolved "https://registry.yarnpkg.com/ttypescript/-/ttypescript-1.5.13.tgz#c3bcb760599fe49157d30c5d5895a0023cbb7f30"
   integrity sha512-KT/RBfGGlVJFqEI8cVvI3nMsmYcFvPSZh8bU0qX+pAwbi7/ABmYkzn7l/K8skw0xmYjVCoyaV6WLsBQxdadybQ==
@@ -12906,11 +12904,6 @@ typescript-transform-paths@^2.0.0:
   integrity sha512-i+/sgp3rw1ZronMCm2TKGBy1dlvN88Kd8CCb+HWnOE8+Hv0uIVnbC8xM5AD2t1JBCWabEhuH9p3n8DOVi0+R6g==
   dependencies:
     minimatch "^3.0.4"
-
-typescript@^4.4.4:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
-  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
 
 typescript@^4.5.4, typescript@^4.7.4:
   version "4.7.4"
@@ -13822,3 +13815,8 @@ zod@^3.11.6:
   version "3.11.6"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.11.6.tgz#e43a5e0c213ae2e02aefe7cb2b1a6fa3d7f1f483"
   integrity sha512-daZ80A81I3/9lIydI44motWe6n59kRBfNzTuS2bfzVh1nAXi667TOTWWtatxyG+fwgNUiagSj/CWZwRRbevJIg==
+
+zod@^3.17.3:
+  version "3.17.3"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.17.3.tgz#86abbc670ff0063a4588d85a4dcc917d6e4af2ba"
+  integrity sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==
