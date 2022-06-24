@@ -21,7 +21,7 @@ const appRouter = trpc
       return 'Hello world III';
     },
   })
-  .query('getMessagesBla', {
+  .query('getMessages', {
     input: z.number().default(10),
     resolve({ input }) {
       return messages.slice(-input);
