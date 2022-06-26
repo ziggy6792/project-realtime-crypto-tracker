@@ -1,8 +1,9 @@
 import React, { Suspense, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
+import superjson from 'superjson';
 import { trpc } from './trpc';
-import { HistoricalPrice } from './components/historical-data';
+import { HistoricalPrice } from './components/historical-price';
 
 const client = new QueryClient();
 
@@ -14,7 +15,7 @@ export type ToSymbol = 'USD';
 export interface Price {
   fromSymbol: FromSymbol;
   toSymbol: ToSymbol;
-  price: number;
+  ammount: number;
 }
 
 type PriceDisaplay = { [key in FromSymbol]: Price };
@@ -34,7 +35,7 @@ const AppContent: React.FC = () => {
     <div>
       {priceDisaplayOrder.map((fromSymbol) => (
         <div key={fromSymbol}>
-          {realtimePrices[fromSymbol] && <div>{`${fromSymbol} ${realtimePrices[fromSymbol].price} ${realtimePrices[fromSymbol].toSymbol}`}</div>}
+          {realtimePrices[fromSymbol] && <div>{`${fromSymbol} ${realtimePrices[fromSymbol].ammount} ${realtimePrices[fromSymbol].toSymbol}`}</div>}
         </div>
       ))}
 
@@ -58,6 +59,7 @@ const App = () => {
           client: wsClient,
         }),
       ],
+      transformer: superjson,
     })
   );
 

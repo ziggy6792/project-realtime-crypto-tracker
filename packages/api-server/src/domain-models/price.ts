@@ -5,5 +5,5 @@ export type ToSymbol = 'USD';
 export interface Price {
   fromSymbol: FromSymbol;
   toSymbol: ToSymbol;
-  price: number;
+  ammount: number;
 }

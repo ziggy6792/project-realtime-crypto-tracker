@@ -13,7 +13,7 @@ export const getHisoricalDataResponseToHistoricalPrices = (
       price: {
         fromSymbol,
         toSymbol,
-        price: data.open,
+        ammount: data.open,
       },
     }));
   }

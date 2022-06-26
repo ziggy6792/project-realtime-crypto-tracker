@@ -4,6 +4,7 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import cors from 'cors';
 import ws from 'ws';
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
+import superjson from 'superjson';
 import { closeConnection, setupConnection } from './connection';
 import { ee } from './events';
 
@@ -14,6 +15,7 @@ import { getHisoricalDataResponseToHistoricalPrices } from './utils/price-mapper
 
 export const appRouter = trpc
   .router()
+  .transformer(superjson)
   .subscription('onUpdatePrice', {
     resolve({ ctx }) {
       // `resolve()` is triggered for each client when they start subscribing `onAdd`

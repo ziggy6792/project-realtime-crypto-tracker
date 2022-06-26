@@ -84,7 +84,7 @@ export const setupConnection = async () => {
         // I'm not sure why but sometimes update happens with no price
         if (data.PRICE) {
           // ToDo: Add to util
-          ee.emit('updatePrice', { fromSymbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, price: data.PRICE } as Price);
+          ee.emit('updatePrice', { fromSymbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, ammount: data.PRICE } as Price);
         }
       }
     }
