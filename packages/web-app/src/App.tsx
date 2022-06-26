@@ -31,23 +31,17 @@ const AppContent: React.FC = () => {
     },
   });
 
+  const getTitle = (fromSymbol: FromSymbol) => {
+    if (!realtimePrices[fromSymbol]) return fromSymbol;
+    return `${fromSymbol} ${realtimePrices[fromSymbol].ammount.toLocaleString()} ${realtimePrices[fromSymbol].toSymbol}`;
+  };
+
   return (
     <div>
-      {/* {priceDisaplayOrder.map((fromSymbol) => (
-        <div key={fromSymbol}>
-          {realtimePrices[fromSymbol] && (
-            <div>{`${fromSymbol} ${realtimePrices[fromSymbol].ammount.toLocaleString()} ${realtimePrices[fromSymbol].toSymbol}`}</div>
-          )}
-        </div>
-      ))} */}
-
       {priceDisaplayOrder.map((fromSymbol) => (
         <>
           <div key={fromSymbol}>
-            {!realtimePrices[fromSymbol] && <h3>{`${fromSymbol}`}</h3>}
-            {realtimePrices[fromSymbol] && (
-              <h3>{`${fromSymbol} ${realtimePrices[fromSymbol].ammount.toLocaleString()} ${realtimePrices[fromSymbol].toSymbol}`}</h3>
-            )}
+            <h3>{getTitle(fromSymbol)}</h3>
           </div>
           <HistoricalPrice fromSymbol={fromSymbol} />
         </>
