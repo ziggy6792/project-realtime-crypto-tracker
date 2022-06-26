@@ -24,7 +24,7 @@ const messages: ChatMessage[] = [
 
 export const appRouter = trpc
   .router()
-  .subscription('onAdd', {
+  .subscription('onAddMessage', {
     resolve({ ctx }) {
       // `resolve()` is triggered for each client when they start subscribing `onAdd`
 
@@ -71,7 +71,15 @@ export const appRouter = trpc
 export type AppRouter = typeof appRouter;
 
 const app = express();
-app.use(cors());
+
+const options = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(options));
 const port = 8080;
 
 export const createContext = () => null;
@@ -107,8 +115,8 @@ wss.on('connection', (ws) => {
 });
 console.log('✅ WebSocket Server listening on ws://localhost:3001');
 
-process.on('SIGTERM', () => {
-  console.log('SIGTERM');
-  handler.broadcastReconnectNotification();
-  wss.close();
-});
+// process.on('SIGTERM', () => {
+//   console.log('SIGTERM');
+//   handler.broadcastReconnectNotification();
+//   wss.close();
+// });
