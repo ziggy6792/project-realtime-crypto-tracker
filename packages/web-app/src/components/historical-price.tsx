@@ -3,11 +3,10 @@ import React, { Suspense, useMemo } from 'react';
 import { trpc } from 'src/trpc';
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import { format } from 'date-fns';
+import _ from 'lodash';
 
 // ToDo infer this later
 export type FromSymbol = 'BTC' | 'ETH';
-
-const timeZone = 'America/New_York';
 
 interface IHistoricalPriceProps {
   fromSymbol: FromSymbol;
@@ -41,7 +40,7 @@ const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) =
     <LineChart width={1200} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
       <Line type='monotone' dataKey='price' stroke='#8884d8' dot={false} />
       <XAxis dataKey='hour' />
-      <YAxis />
+      <YAxis dataKey='price' type='number' domain={['dataMin', 'dataMax']} tickCount={3} />
     </LineChart>
   );
 };
