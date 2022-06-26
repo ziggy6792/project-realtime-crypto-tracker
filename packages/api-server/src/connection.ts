@@ -2,8 +2,23 @@
 import { client as WebSocketClient, connection as Connection } from 'websocket';
 import { ee } from './events';
 
-export interface Price {
-  TYPE: string;
+enum WsEventType {
+  PRICE_UPDATE = '5',
+  HEARTBEAT = '999',
+}
+
+export interface WsBaseEvent {
+  TYPE: WsEventType;
+}
+
+export interface Heartbeat extends WsBaseEvent {
+  TYPE: WsEventType.HEARTBEAT;
+  MESSAGE: string;
+  TIMEMS: number;
+}
+
+export interface PriceUpdate {
+  TYPE: WsEventType.PRICE_UPDATE;
   MARKET: string;
   FROMSYMBOL: string;
   TOSYMBOL: string;
@@ -27,6 +42,8 @@ export interface Price {
   CIRCULATINGSUPPLYMKTCAP: number;
   MAXSUPPLYMKTCAP: number;
 }
+
+export type WsEvent = PriceUpdate | Heartbeat;
 
 let connection: Connection;
 
@@ -60,8 +77,10 @@ export const setupConnection = async () => {
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
       console.log(`Received: '${message.utf8Data}'`);
-      const data = JSON.parse(message.utf8Data) as Price;
-      ee.emit('updatePrice', data);
+      const data = JSON.parse(message.utf8Data) as WsEvent;
+      if (data.TYPE === WsEventType.PRICE_UPDATE) {
+        ee.emit('updatePrice', data);
+      }
     }
   });
 
@@ -70,7 +89,7 @@ export const setupConnection = async () => {
       connection.sendUTF(
         JSON.stringify({
           action: 'SubAdd',
-          subs: ['5~CCCAGG~BTC~USD'],
+          subs: ['5~CCCAGG~BTC~USD', '5~CCCAGG~ETH~USD'],
         })
       );
     }

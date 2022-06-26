@@ -1,5 +1,5 @@
 import { EventEmitter } from 'ws';
-import { Price } from './connection';
+import { PriceUpdate } from './connection';
 
 // create a global event emitter (could be replaced by redis, etc)
 // export const ee = new EventEmitter();
@@ -10,7 +10,7 @@ import { Price } from './connection';
 // };
 
 interface MyEvents {
-  updatePrice: (data: Price) => void;
+  updatePrice: (data: PriceUpdate) => void;
   add: (data: any) => void;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
