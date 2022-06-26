@@ -2,6 +2,7 @@ import React, { Suspense, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import { trpc } from './trpc';
+import { HistoricalPrice } from './components/historical-data';
 
 const client = new QueryClient();
 
@@ -20,14 +21,6 @@ type PriceDisaplay = { [key in FromSymbol]: Price };
 
 const priceDisaplayOrder: FromSymbol[] = ['BTC', 'ETH'];
 
-const HistoricalData: React.FC = () => {
-  const getHistoricalPrice = trpc.useQuery(['getHistoricalPrice', { fromSymbol: 'BTC', toSymbol: 'USD' }], { suspense: true });
-
-  console.log('getHistoricalPrice', JSON.stringify(getHistoricalPrice.data));
-
-  return <div>{JSON.stringify(getHistoricalPrice.data)}</div>;
-};
-
 const AppContent: React.FC = () => {
   const [realtimePrices, setRealtimePrices] = useState<PriceDisaplay>({} as PriceDisaplay);
 
@@ -39,16 +32,15 @@ const AppContent: React.FC = () => {
 
   return (
     <div>
-      {priceDisaplayOrder.map((priceToDisplay) => (
-        <div key={priceToDisplay}>
-          {realtimePrices[priceToDisplay] && (
-            <div>{`${priceToDisplay} ${realtimePrices[priceToDisplay].price} ${realtimePrices[priceToDisplay].toSymbol}`}</div>
-          )}
+      {priceDisaplayOrder.map((fromSymbol) => (
+        <div key={fromSymbol}>
+          {realtimePrices[fromSymbol] && <div>{`${fromSymbol} ${realtimePrices[fromSymbol].price} ${realtimePrices[fromSymbol].toSymbol}`}</div>}
         </div>
       ))}
-      <Suspense fallback={<div>Loading...</div>}>
-        <HistoricalData />
-      </Suspense>
+
+      {priceDisaplayOrder.map((fromSymbol) => (
+        <HistoricalPrice fromSymbol={fromSymbol} />
+      ))}
     </div>
   );
 };
