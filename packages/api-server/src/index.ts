@@ -4,6 +4,14 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import cors from 'cors';
 import { z } from 'zod';
 
+import { EventEmitter } from 'events';
+
+import ws from 'ws';
+import { applyWSSHandler } from '@trpc/server/adapters/ws';
+
+// create a global event emitter (could be replaced by redis, etc)
+const ee = new EventEmitter();
+
 interface ChatMessage {
   user: string;
   message: string;
@@ -14,8 +22,29 @@ const messages: ChatMessage[] = [
   { user: 'user2', message: 'Hi' },
 ];
 
-const appRouter = trpc
+export const appRouter = trpc
   .router()
+  .subscription('onAdd', {
+    resolve({ ctx }) {
+      // `resolve()` is triggered for each client when they start subscribing `onAdd`
+
+      // return a `Subscription` with a callback which is triggered immediately
+      return new trpc.Subscription<ChatMessage>((emit) => {
+        const onAdd = (data: ChatMessage) => {
+          // emit data to client
+          emit.data(data);
+        };
+
+        // trigger `onAdd()` when `add` is triggered in our event emitter
+        ee.on('add', onAdd);
+
+        // unsubscribe function when client disconnects or stops subscribing
+        return () => {
+          ee.off('add', onAdd);
+        };
+      });
+    },
+  })
   .query('hello', {
     resolve() {
       return 'Hello world III';
@@ -34,6 +63,7 @@ const appRouter = trpc
     }),
     resolve({ input }) {
       messages.push(input);
+      ee.emit('add', input);
       return input;
     },
   });
@@ -44,11 +74,13 @@ const app = express();
 app.use(cors());
 const port = 8080;
 
+export const createContext = () => null;
+
 app.use(
   '/trpc',
   trpcExpress.createExpressMiddleware({
     router: appRouter,
-    createContext: () => null,
+    createContext,
   })
 );
 
@@ -58,4 +90,25 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`api-server listening at http://localhost:${port}`);
+});
+
+// Create WebSocket
+
+const wss = new ws.Server({
+  port: 3001,
+});
+const handler = applyWSSHandler({ wss, router: appRouter, createContext });
+
+wss.on('connection', (ws) => {
+  console.log(`Connection (${wss.clients.size})`);
+  ws.once('close', () => {
+    console.log(`Connection (${wss.clients.size})`);
+  });
+});
+console.log('✅ WebSocket Server listening on ws://localhost:3001');
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM');
+  handler.broadcastReconnectNotification();
+  wss.close();
 });
