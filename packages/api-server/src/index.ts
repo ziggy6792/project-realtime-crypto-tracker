@@ -96,7 +96,7 @@ app.get('/', (req, res) => {
   res.send('Hello from api-server');
 });
 
-app.listen(port, () => {
+const mainServer = app.listen(port, () => {
   console.log(`api-server listening at http://localhost:${port}`);
 });
 
@@ -113,10 +113,12 @@ wss.on('connection', (ws) => {
     console.log(`Connection (${wss.clients.size})`);
   });
 });
+//
 console.log('✅ WebSocket Server listening on ws://localhost:3001');
 
-// process.on('SIGTERM', () => {
-//   console.log('SIGTERM');
-//   handler.broadcastReconnectNotification();
-//   wss.close();
-// });
+process.on('SIGINT', () => {
+  console.log('Got SIGINT.  Press Control-C to exit.');
+  handler.broadcastReconnectNotification();
+  wss.close();
+  mainServer.close();
+});
