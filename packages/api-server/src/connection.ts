@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { client as WebSocketClient, connection as Connection } from 'websocket';
 
-const client = new WebSocketClient();
-
 let connection: Connection;
 
 const getConnection = (connectionString: string) =>
   new Promise((resolve, rejeect) => {
+    const client = new WebSocketClient();
     client.connect(connectionString);
     client.on('connect', (connection) => {
       console.log('WebSocket Client Connected');
