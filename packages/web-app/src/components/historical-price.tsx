@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from 'react';
 
 import { trpc } from 'src/trpc';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Label } from 'recharts';
 import { format } from 'date-fns';
 import _ from 'lodash';
 
@@ -37,13 +37,22 @@ const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) =
   }, [data]);
 
   return (
-    <LineChart width={1200} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 30 }}>
-      <Line type='monotone' dataKey='price' stroke='#8884d8' dot={false} />
-      <XAxis dataKey='hour' />
-      <CartesianGrid strokeDasharray='3 3' />
-      <Tooltip />
-      <YAxis dataKey='price' type='number' domain={['dataMin', 'dataMax']} tickCount={3} tickFormatter={(tick) => tick.toLocaleString()} />
-    </LineChart>
+    <>
+      <div>
+        <h3>{fromSymbol}</h3>
+      </div>
+      <LineChart width={1200} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 20, left: 40 }}>
+        <Line type='monotone' dataKey='price' stroke='#8884d8' dot={false} />
+        <XAxis dataKey='hour' dy={8}>
+          <Label value='Hour of day' position='bottom' offset={3} />
+        </XAxis>
+        <CartesianGrid strokeDasharray='3 3' />
+        <Tooltip />
+        <YAxis dataKey='price' dx={-6} type='number' domain={['dataMin', 'dataMax']} tickCount={3} tickFormatter={(tick) => tick.toLocaleString()}>
+          <Label value='Price in USD' position='left' angle={-90} style={{ textAnchor: 'middle' }} offset={20} />
+        </YAxis>
+      </LineChart>
+    </>
   );
 };
 
