@@ -33,14 +33,24 @@ const AppContent: React.FC = () => {
 
   return (
     <div>
-      {priceDisaplayOrder.map((fromSymbol) => (
+      {/* {priceDisaplayOrder.map((fromSymbol) => (
         <div key={fromSymbol}>
-          {realtimePrices[fromSymbol] && <div>{`${fromSymbol} ${realtimePrices[fromSymbol].ammount} ${realtimePrices[fromSymbol].toSymbol}`}</div>}
+          {realtimePrices[fromSymbol] && (
+            <div>{`${fromSymbol} ${realtimePrices[fromSymbol].ammount.toLocaleString()} ${realtimePrices[fromSymbol].toSymbol}`}</div>
+          )}
         </div>
-      ))}
+      ))} */}
 
       {priceDisaplayOrder.map((fromSymbol) => (
-        <HistoricalPrice fromSymbol={fromSymbol} />
+        <>
+          <div key={fromSymbol}>
+            {!realtimePrices[fromSymbol] && <h3>{`${fromSymbol}`}</h3>}
+            {realtimePrices[fromSymbol] && (
+              <h3>{`${fromSymbol} ${realtimePrices[fromSymbol].ammount.toLocaleString()} ${realtimePrices[fromSymbol].toSymbol}`}</h3>
+            )}
+          </div>
+          <HistoricalPrice fromSymbol={fromSymbol} />
+        </>
       ))}
     </div>
   );
