@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from 'react';
 
 import { trpc } from 'src/trpc';
-import { LineChart, Line, XAxis, YAxis } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { format } from 'date-fns';
 import _ from 'lodash';
 
@@ -31,16 +31,18 @@ const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) =
 
   const chartData = useMemo(() => {
     if (data) {
-      return data.map(({ price, date }) => ({ hour: format(date, 'HH'), price: price.ammount }));
+      return data.map(({ price, date }) => ({ hour: format(date, 'HH:mm'), price: price.ammount }));
     }
     return [];
   }, [data]);
 
   return (
-    <LineChart width={1200} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+    <LineChart width={1200} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 30 }}>
       <Line type='monotone' dataKey='price' stroke='#8884d8' dot={false} />
       <XAxis dataKey='hour' />
-      <YAxis dataKey='price' type='number' domain={['dataMin', 'dataMax']} tickCount={3} />
+      <CartesianGrid strokeDasharray='3 3' />
+      <Tooltip />
+      <YAxis dataKey='price' type='number' domain={['dataMin', 'dataMax']} tickCount={3} tickFormatter={(tick) => tick.toLocaleString()} />
     </LineChart>
   );
 };
