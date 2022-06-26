@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-// import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import { trpc } from './trpc';
 
@@ -12,6 +10,7 @@ const AppContent = () => {
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
   const addMessage = trpc.useMutation('addMessage');
+
   const onAdd = () => {
     addMessage.mutate(
       {
@@ -30,6 +29,13 @@ const AppContent = () => {
     onNext(data) {
       // setNewMessage(data);
       console.log('data', data);
+    },
+  });
+
+  trpc.useSubscription(['onUpdatePrice'], {
+    onNext(data) {
+      // setNewMessage(data);
+      console.log('onUpdatePrice', data);
     },
   });
 

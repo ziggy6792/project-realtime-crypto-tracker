@@ -8,10 +8,12 @@ import { EventEmitter } from 'events';
 
 import ws from 'ws';
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
-import { closeConnection, setupConnection } from './connection';
+import { closeConnection, Price, setupConnection } from './connection';
+import { ee } from './events';
+// import { createUpdateFunction } from './events';
 
 // create a global event emitter (could be replaced by redis, etc)
-const ee = new EventEmitter();
+// const ee = new EventEmitter();
 
 interface ChatMessage {
   user: string;
@@ -25,6 +27,24 @@ const messages: ChatMessage[] = [
 
 export const appRouter = trpc
   .router()
+  .subscription('onUpdatePrice', {
+    resolve({ ctx }) {
+      // `resolve()` is triggered for each client when they start subscribing `onAdd`
+
+      // return a `Subscription` with a callback which is triggered immediately
+      return new trpc.Subscription<Price>((emit) => {
+        const onUpdate = (data: Price) => emit.data(data);
+
+        // trigger `onAdd()` when `add` is triggered in our event emitter
+        ee.on('updatePrice', onUpdate);
+
+        // unsubscribe function when client disconnects or stops subscribing
+        return () => {
+          ee.off('updatePrice', onUpdate);
+        };
+      });
+    },
+  })
   .subscription('onAddMessage', {
     resolve({ ctx }) {
       // `resolve()` is triggered for each client when they start subscribing `onAdd`
