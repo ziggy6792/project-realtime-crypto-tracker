@@ -1,16 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { client as WebSocketClient } from 'websocket';
-import { EventEmitter } from 'ws';
-import { WebsocketBuilder } from 'websocket-ts';
+import { client as WebSocketClient, connection as Connection } from 'websocket';
 
 const client = new WebSocketClient();
 
-client.on('connectFailed', (error) => {
-  console.log(`Connect Error: ${error.toString()}`);
-});
+let connection: Connection;
 
-client.on('connect', (connection) => {
-  console.log('WebSocket Client Connected');
+const getConnection = (connectionString: string) =>
+  new Promise((resolve, rejeect) => {
+    client.connect(connectionString);
+    client.on('connect', (connection) => {
+      console.log('WebSocket Client Connected');
+      resolve(connection);
+    });
+    client.on('connectFailed', (error) => {
+      console.log(`Connect Error: ${error.toString()}`);
+      rejeect(error);
+    });
+  }) as Promise<Connection>;
+
+const API_KEY = '803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133';
+
+export const setupConnection = async () => {
+  // client.connect(`wss://streamer.cryptocompare.com/v2?api_key=${API_KEY}`);
+
+  connection = await getConnection(`wss://streamer.cryptocompare.com/v2?api_key=${API_KEY}`);
+
   connection.on('error', (error) => {
     console.log(`Connection Error: ${error.toString()}`);
   });
@@ -28,20 +42,19 @@ client.on('connect', (connection) => {
       connection.sendUTF(
         JSON.stringify({
           action: 'SubAdd',
-          subs: ['5~CCCAGG~BTC~USD', '0~Coinbase~ETH~USD', '2~Binance~BTC~USDT'],
+          subs: ['5~CCCAGG~BTC~USD'],
         })
       );
     }
   };
   subscribe();
-});
 
-const API_KEY = '803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133';
+  // client.removeAllListeners();
 
-// export const setupConnection = () => {
-//   client.connect('wss://streamer.cryptocompare.com/v2', undefined, undefined, { api_key: '803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133' });
-// };
+  // client.removeAllListeners();
+  // client;
+};
 
-export const setupConnection = () => {
-  client.connect(`wss://streamer.cryptocompare.com/v2?api_key=${API_KEY}`);
+export const closeConnection = () => {
+  connection.close();
 };

@@ -8,7 +8,7 @@ import { EventEmitter } from 'events';
 
 import ws from 'ws';
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
-import { setupConnection } from './connection';
+import { closeConnection, setupConnection } from './connection';
 
 // create a global event emitter (could be replaced by redis, etc)
 const ee = new EventEmitter();
@@ -122,6 +122,7 @@ process.on('SIGINT', () => {
   handler.broadcastReconnectNotification();
   wss.close();
   mainServer.close();
+  closeConnection();
 });
 
 setupConnection();
