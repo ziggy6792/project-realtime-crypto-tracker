@@ -18,14 +18,14 @@ enum ToSymbol {
   USD = 'USD',
 }
 
-export interface PriceUpdate {
+export interface Price {
   fromSymbol: FromSymbol;
   toSymbol: ToSymbol;
   price: number;
 }
 
 interface MyEvents {
-  updatePrice: (data: PriceUpdate) => void;
+  updatePrice: (data: Price) => void;
   add: (data: any) => void;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

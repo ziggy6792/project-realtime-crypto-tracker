@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { client as WebSocketClient, connection as Connection } from 'websocket';
-import { ee, PriceUpdate } from './events';
+import { ee, Price } from './events';
 
 enum WsEventType {
   PRICE_UPDATE = '5',
@@ -23,7 +23,7 @@ interface PriceUpdateWsEvent {
   FROMSYMBOL: string;
   TOSYMBOL: string;
   FLAGS: number;
-  PRICE: number;
+  PRICE?: number;
   LASTUPDATE: number;
   MEDIAN: number;
   LASTVOLUME: number;
@@ -79,7 +79,10 @@ export const setupConnection = async () => {
       console.log(`Received: '${message.utf8Data}'`);
       const data = JSON.parse(message.utf8Data) as WsEvent;
       if (data.TYPE === WsEventType.PRICE_UPDATE) {
-        ee.emit('updatePrice', { fromSymbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, price: data.PRICE } as PriceUpdate);
+        // I'm not sure why but sometimes update happens with no price
+        if (data.PRICE) {
+          ee.emit('updatePrice', { fromSymbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, price: data.PRICE } as Price);
+        }
       }
     }
   });
@@ -95,11 +98,6 @@ export const setupConnection = async () => {
     }
   };
   subscribe();
-
-  // client.removeAllListeners();
-
-  // client.removeAllListeners();
-  // client;
 };
 
 export const closeConnection = () => {

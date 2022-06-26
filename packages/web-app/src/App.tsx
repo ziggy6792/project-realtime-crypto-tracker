@@ -5,25 +5,30 @@ import { trpc } from './trpc';
 
 const client = new QueryClient();
 
+// ToDo infer this later
+enum FromSymbol {
+  BTC = 'BTC',
+  ETH = 'ETH',
+}
+
+enum ToSymbol {
+  USD = 'USD',
+}
+
+export interface Price {
+  fromSymbol: FromSymbol;
+  toSymbol: ToSymbol;
+  price: number;
+}
+
+type PriceDisaplay = { [key in FromSymbol]: Price };
+
+const priceDisaplayOrder = [FromSymbol.BTC, FromSymbol.ETH];
+
 const AppContent = () => {
   const getMessages = trpc.useQuery(['getMessages']);
-  const [user, setUser] = useState('');
-  const [message, setMessage] = useState('');
-  const addMessage = trpc.useMutation('addMessage');
 
-  const onAdd = () => {
-    addMessage.mutate(
-      {
-        message,
-        user,
-      },
-      {
-        onSuccess: () => {
-          client.invalidateQueries(['getMessages']);
-        },
-      }
-    );
-  };
+  const [realtimePrices, setRealtimePrices] = useState<PriceDisaplay>({} as PriceDisaplay);
 
   trpc.useSubscription(['onAddMessage'], {
     onNext(data) {
@@ -34,25 +39,19 @@ const AppContent = () => {
 
   trpc.useSubscription(['onUpdatePrice'], {
     onNext(data) {
-      // setNewMessage(data);
-      console.log('onUpdatePrice', data);
+      setRealtimePrices((currVal) => ({ ...currVal, [data.fromSymbol]: data }));
     },
   });
 
   return (
     <div>
-      <div>
-        {(getMessages.data ?? []).map((row) => (
-          <div key={row.message}>{JSON.stringify(row)}</div>
-        ))}
-      </div>
-
-      <div>
-        <input type='text' value={user} onChange={(e) => setUser(e.target.value)} placeholder='User' />
-        <input type='text' value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Message' />
-      </div>
-
-      <button onClick={onAdd}>Add message</button>
+      {priceDisaplayOrder.map((priceToDisplay) => (
+        <div key={priceToDisplay}>
+          {realtimePrices[priceToDisplay] && (
+            <div>{`${priceToDisplay} ${realtimePrices[priceToDisplay].price} ${realtimePrices[priceToDisplay].toSymbol}`}</div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
