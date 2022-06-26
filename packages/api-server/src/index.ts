@@ -8,8 +8,8 @@ import { EventEmitter } from 'events';
 
 import ws from 'ws';
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
-import { closeConnection, PriceUpdate, setupConnection } from './connection';
-import { ee } from './events';
+import { closeConnection, setupConnection } from './connection';
+import { ee, PriceUpdate } from './events';
 // import { createUpdateFunction } from './events';
 
 // create a global event emitter (could be replaced by redis, etc)

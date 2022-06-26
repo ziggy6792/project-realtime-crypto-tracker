@@ -1,5 +1,5 @@
 import { EventEmitter } from 'ws';
-import { PriceUpdate } from './connection';
+// import { PriceUpdate } from './connection';
 
 // create a global event emitter (could be replaced by redis, etc)
 // export const ee = new EventEmitter();
@@ -8,6 +8,21 @@ import { PriceUpdate } from './connection';
 //   // emit data to client
 //   emit.data(data);
 // };
+
+enum FromSymbol {
+  BTC = 'BTC',
+  ETH = 'ETH',
+}
+
+enum ToSymbol {
+  USD = 'USD',
+}
+
+export interface PriceUpdate {
+  fromSymbol: FromSymbol;
+  toSymbol: ToSymbol;
+  price: number;
+}
 
 interface MyEvents {
   updatePrice: (data: PriceUpdate) => void;

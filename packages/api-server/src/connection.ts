@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { client as WebSocketClient, connection as Connection } from 'websocket';
-import { ee } from './events';
+import { ee, PriceUpdate } from './events';
 
 enum WsEventType {
   PRICE_UPDATE = '5',
   HEARTBEAT = '999',
 }
 
-export interface WsBaseEvent {
+interface WsBaseEvent {
   TYPE: WsEventType;
 }
 
-export interface Heartbeat extends WsBaseEvent {
+interface HeartbeatWsEvent extends WsBaseEvent {
   TYPE: WsEventType.HEARTBEAT;
   MESSAGE: string;
   TIMEMS: number;
 }
 
-export interface PriceUpdate {
+interface PriceUpdateWsEvent {
   TYPE: WsEventType.PRICE_UPDATE;
   MARKET: string;
   FROMSYMBOL: string;
@@ -43,7 +43,7 @@ export interface PriceUpdate {
   MAXSUPPLYMKTCAP: number;
 }
 
-export type WsEvent = PriceUpdate | Heartbeat;
+export type WsEvent = PriceUpdateWsEvent | HeartbeatWsEvent;
 
 let connection: Connection;
 
@@ -79,7 +79,7 @@ export const setupConnection = async () => {
       console.log(`Received: '${message.utf8Data}'`);
       const data = JSON.parse(message.utf8Data) as WsEvent;
       if (data.TYPE === WsEventType.PRICE_UPDATE) {
-        ee.emit('updatePrice', data);
+        ee.emit('updatePrice', { fromSymbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, price: data.PRICE } as PriceUpdate);
       }
     }
   });
