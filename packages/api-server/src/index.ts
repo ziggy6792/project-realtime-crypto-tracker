@@ -2,28 +2,15 @@ import express from 'express';
 import * as trpc from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import cors from 'cors';
-import { z } from 'zod';
-
-import { EventEmitter } from 'events';
-
 import ws from 'ws';
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
 import { closeConnection, setupConnection } from './connection';
-import { ee, Price } from './events';
-// import { createUpdateFunction } from './events';
+import { ee } from './events';
 
-// create a global event emitter (could be replaced by redis, etc)
-// const ee = new EventEmitter();
-
-interface ChatMessage {
-  user: string;
-  message: string;
-}
-//
-const messages: ChatMessage[] = [
-  { user: 'user1', message: 'Hello' },
-  { user: 'user2', message: 'Hi' },
-];
+import * as cryptocompareService from './services/cryptocompare-service';
+import { getHisoricalDataValidator } from './validators/validators';
+import { Price } from './domain-models/price';
+import { getHisoricalDataResponseToHistoricalPrices } from './utils/price-mapper';
 
 export const appRouter = trpc
   .router()
@@ -45,47 +32,12 @@ export const appRouter = trpc
       });
     },
   })
-  .subscription('onAddMessage', {
-    resolve({ ctx }) {
-      // `resolve()` is triggered for each client when they start subscribing `onAdd`
-
-      // return a `Subscription` with a callback which is triggered immediately
-      return new trpc.Subscription<ChatMessage>((emit) => {
-        const onAdd = (data: ChatMessage) => {
-          // emit data to client
-          emit.data(data);
-        };
-
-        // trigger `onAdd()` when `add` is triggered in our event emitter
-        ee.on('add', onAdd);
-
-        // unsubscribe function when client disconnects or stops subscribing
-        return () => {
-          ee.off('add', onAdd);
-        };
-      });
-    },
-  })
-  .query('hello', {
-    resolve() {
-      return 'Hello world III';
-    },
-  })
-  .query('getMessages', {
-    input: z.number().default(10),
-    resolve({ input }) {
-      return messages.slice(-input);
-    },
-  })
-  .mutation('addMessage', {
-    input: z.object({
-      user: z.string(),
-      message: z.string(),
-    }),
-    resolve({ input }) {
-      messages.push(input);
-      ee.emit('add', input);
-      return input;
+  .query('getHistoricalPrice', {
+    input: getHisoricalDataValidator,
+    async resolve({ input }) {
+      const apiResponse = await cryptocompareService.getHisoricalData(input);
+      const historicalPrices = getHisoricalDataResponseToHistoricalPrices(apiResponse, input.fromSymbol, input.toSymbol);
+      return historicalPrices;
     },
   });
 

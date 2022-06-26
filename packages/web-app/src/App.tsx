@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import { trpc } from './trpc';
@@ -6,14 +6,9 @@ import { trpc } from './trpc';
 const client = new QueryClient();
 
 // ToDo infer this later
-enum FromSymbol {
-  BTC = 'BTC',
-  ETH = 'ETH',
-}
+export type FromSymbol = 'BTC' | 'ETH';
 
-enum ToSymbol {
-  USD = 'USD',
-}
+export type ToSymbol = 'USD';
 
 export interface Price {
   fromSymbol: FromSymbol;
@@ -23,19 +18,18 @@ export interface Price {
 
 type PriceDisaplay = { [key in FromSymbol]: Price };
 
-const priceDisaplayOrder = [FromSymbol.BTC, FromSymbol.ETH];
+const priceDisaplayOrder: FromSymbol[] = ['BTC', 'ETH'];
 
-const AppContent = () => {
-  const getMessages = trpc.useQuery(['getMessages']);
+const HistoricalData: React.FC = () => {
+  const getHistoricalPrice = trpc.useQuery(['getHistoricalPrice', { fromSymbol: 'BTC', toSymbol: 'USD' }], { suspense: true });
 
+  console.log('getHistoricalPrice', JSON.stringify(getHistoricalPrice.data));
+
+  return <div>{JSON.stringify(getHistoricalPrice.data)}</div>;
+};
+
+const AppContent: React.FC = () => {
   const [realtimePrices, setRealtimePrices] = useState<PriceDisaplay>({} as PriceDisaplay);
-
-  trpc.useSubscription(['onAddMessage'], {
-    onNext(data) {
-      // setNewMessage(data);
-      console.log('data', data);
-    },
-  });
 
   trpc.useSubscription(['onUpdatePrice'], {
     onNext(data) {
@@ -52,6 +46,9 @@ const AppContent = () => {
           )}
         </div>
       ))}
+      <Suspense fallback={<div>Loading...</div>}>
+        <HistoricalData />
+      </Suspense>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { client as WebSocketClient, connection as Connection } from 'websocket';
-import { ee, Price } from './events';
+import { Price } from './domain-models/price';
+import { ee } from './events';
 
 enum WsEventType {
   PRICE_UPDATE = '5',
@@ -17,7 +18,7 @@ interface HeartbeatWsEvent extends WsBaseEvent {
   TIMEMS: number;
 }
 
-interface PriceUpdateWsEvent {
+export interface PriceUpdateWsEvent {
   TYPE: WsEventType.PRICE_UPDATE;
   MARKET: string;
   FROMSYMBOL: string;
@@ -61,6 +62,7 @@ const getConnection = (connectionString: string) =>
     });
   }) as Promise<Connection>;
 
+// ToDo: Config
 const API_KEY = '803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133';
 
 export const setupConnection = async () => {
@@ -81,6 +83,7 @@ export const setupConnection = async () => {
       if (data.TYPE === WsEventType.PRICE_UPDATE) {
         // I'm not sure why but sometimes update happens with no price
         if (data.PRICE) {
+          // ToDo: Add to util
           ee.emit('updatePrice', { fromSymbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, price: data.PRICE } as Price);
         }
       }

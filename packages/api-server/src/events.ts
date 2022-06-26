@@ -1,4 +1,5 @@
 import { EventEmitter } from 'ws';
+import { Price } from './domain-models/price';
 // import { PriceUpdate } from './connection';
 
 // create a global event emitter (could be replaced by redis, etc)
@@ -8,21 +9,6 @@ import { EventEmitter } from 'ws';
 //   // emit data to client
 //   emit.data(data);
 // };
-
-enum FromSymbol {
-  BTC = 'BTC',
-  ETH = 'ETH',
-}
-
-enum ToSymbol {
-  USD = 'USD',
-}
-
-export interface Price {
-  fromSymbol: FromSymbol;
-  toSymbol: ToSymbol;
-  price: number;
-}
 
 interface MyEvents {
   updatePrice: (data: Price) => void;
