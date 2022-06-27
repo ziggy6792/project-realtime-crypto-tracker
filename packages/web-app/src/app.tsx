@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import superjson from 'superjson';
 import { FromSymbol, Price } from '@gsg-code-assignment/api-server';
+import { loggerLink } from '@trpc/client/links/loggerLink';
 import { trpc } from './trpc';
 import { HistoricalPrice } from './components/historical-price';
 
@@ -43,6 +44,7 @@ const App = () => {
     trpc.createClient({
       url: process.env.REACT_APP_API_GSG_INTERNAL_URL,
       links: [
+        loggerLink({ enabled: () => true }),
         wsLink({
           client: createWSClient({
             url: process.env.REACT_APP_API_GSG_INTERNAL_WS_URL,
