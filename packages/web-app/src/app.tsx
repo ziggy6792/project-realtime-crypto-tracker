@@ -34,7 +34,7 @@ const AppContent: React.FC = () => {
       {priceDisaplayOrder.map((fromSymbol) => (
         <div key={fromSymbol}>
           <h3>{getTitle(fromSymbol)}</h3>
-          <HistoricalPrice fromSymbol={fromSymbol} />
+          {/* <HistoricalPrice fromSymbol={fromSymbol} /> */}
         </div>
       ))}
     </div>
