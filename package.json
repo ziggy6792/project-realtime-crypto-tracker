@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "test": "jest --coverage --debug --runInBand --colors",
     "start": "lerna run start --stream --parallel",
     "build": "lerna run build --stream --parallel",
     "typecheck": "lerna run --stream  typecheck",
@@ -20,10 +21,13 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^28.1.1",
     "lerna": "^5.1.5",
-    "prettier-eslint": "^15.0.1"
+    "prettier-eslint": "^15.0.1",
+    "ts-jest": "^28.0.5",
+    "tsconfig-paths-jest": "^0.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "babel-jest": "^28.1.1"
   },
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.29.0"
-  }
+  "dependencies": {}
 }
