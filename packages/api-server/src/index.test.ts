@@ -1,5 +1,5 @@
 describe('Score Run', () => {
-  it('score big comp', async () => {
+  it('tset', async () => {
     expect(1 + 1).toEqual(2);
   });
 });
