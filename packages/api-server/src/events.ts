@@ -1,19 +1,10 @@
 import { EventEmitter } from 'ws';
 import { Price } from './domain-models/price';
-// import { PriceUpdate } from './connection';
-
-// create a global event emitter (could be replaced by redis, etc)
-// export const ee = new EventEmitter();
-
-// export const createUpdateFunction = (emit: trpc.SubscriptionEmit<Price>) => (data: Price) => {
-//   // emit data to client
-//   emit.data(data);
-// };
 
 interface MyEvents {
   updatePrice: (data: Price) => void;
-  add: (data: any) => void;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare interface MyEventEmitter {
   on<U extends keyof MyEvents>(event: U, listener: MyEvents[U]): this;

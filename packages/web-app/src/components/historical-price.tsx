@@ -40,7 +40,7 @@ const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) =
     <LineChart width={1200} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 25, left: 40 }}>
       <Line type='monotone' dataKey='price' stroke='#8884d8' dot={false} />
       <XAxis dataKey='hour' dy={8}>
-        <Label value='Hour of day' position='bottom' offset={10} />
+        <Label value='Hour' position='bottom' offset={10} />
       </XAxis>
       <CartesianGrid strokeDasharray='3 3' />
       <Tooltip />

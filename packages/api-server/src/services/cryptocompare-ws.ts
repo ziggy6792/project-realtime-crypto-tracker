@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { client as WebSocketClient, connection as Connection } from 'websocket';
-import { Price } from './domain-models/price';
-import { ee } from './events';
 
 enum WsEventType {
   PRICE_UPDATE = '5',
@@ -65,9 +63,12 @@ const getConnection = (connectionString: string) =>
 // ToDo: Config
 const API_KEY = '803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133';
 
-export const setupConnection = async () => {
-  // client.connect(`wss://streamer.cryptocompare.com/v2?api_key=${API_KEY}`);
+interface ISetupConnectionArgs {
+  onUpdatePrice: (data: PriceUpdateWsEvent) => void;
+  subsciptions?: string[];
+}
 
+export const setupConnection = async ({ onUpdatePrice, subsciptions = ['5~CCCAGG~BTC~USD', '5~CCCAGG~ETH~USD'] }: ISetupConnectionArgs) => {
   connection = await getConnection(`wss://streamer.cryptocompare.com/v2?api_key=${API_KEY}`);
 
   connection.on('error', (error) => {
@@ -78,29 +79,26 @@ export const setupConnection = async () => {
   });
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
-      console.log(`Received: '${message.utf8Data}'`);
       const data = JSON.parse(message.utf8Data) as WsEvent;
       if (data.TYPE === WsEventType.PRICE_UPDATE) {
         // I'm not sure why but sometimes update happens with no price
         if (data.PRICE) {
           // ToDo: Add to util
-          ee.emit('updatePrice', { fromSymbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, ammount: data.PRICE } as Price);
+          onUpdatePrice(data);
         }
       }
     }
   });
 
-  const subscribe = () => {
-    if (connection.connected) {
-      connection.sendUTF(
-        JSON.stringify({
-          action: 'SubAdd',
-          subs: ['5~CCCAGG~BTC~USD', '5~CCCAGG~ETH~USD'],
-        })
-      );
-    }
-  };
-  subscribe();
+  // Subscribe
+  if (connection.connected) {
+    connection.sendUTF(
+      JSON.stringify({
+        action: 'SubAdd',
+        subs: subsciptions,
+      })
+    );
+  }
 };
 
 export const closeConnection = () => {

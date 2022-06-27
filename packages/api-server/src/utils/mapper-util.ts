@@ -1,6 +1,7 @@
+import { PriceUpdateWsEvent } from 'src/services/cryptocompare-ws';
 import { HistoricalPrice } from 'src/domain-models/historical-price';
-import { FromSymbol, ToSymbol } from 'src/domain-models/price';
-import { GetHisoricalDataResponse } from 'src/services/cryptocompare-service';
+import { FromSymbol, Price, ToSymbol } from 'src/domain-models/price';
+import { GetHisoricalDataResponse } from 'src/services/cryptocompare-api';
 
 export const getHisoricalDataResponseToHistoricalPrices = (
   apiResponse: GetHisoricalDataResponse,
@@ -19,3 +20,6 @@ export const getHisoricalDataResponseToHistoricalPrices = (
   }
   return [];
 };
+
+export const priceUpdateWsEventToPrice = (wsEvent: PriceUpdateWsEvent) =>
+  ({ fromSymbol: wsEvent.FROMSYMBOL, toSymbol: wsEvent.TOSYMBOL, ammount: wsEvent.PRICE } as Price);
