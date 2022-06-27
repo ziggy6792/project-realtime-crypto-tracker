@@ -1,28 +1,12 @@
 import React, { Suspense, useMemo } from 'react';
-
 import { trpc } from 'src/trpc';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Label } from 'recharts';
 import { format } from 'date-fns';
-import _ from 'lodash';
-
-// ToDo infer this later
-export type FromSymbol = 'BTC' | 'ETH';
+import { FromSymbol } from '@gsg-code-assignment/api-server';
 
 interface IHistoricalPriceProps {
   fromSymbol: FromSymbol;
 }
-
-// const data: any[] | undefined = [];
-
-// const rand = 300;
-// for (let i = 0; i < 7; i++) {
-//   const d = {
-//     year: 2000 + i,
-//     value: Math.random() * (rand + 50) + 100,
-//   };
-
-//   data.push(d);
-// }
 
 const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) => {
   const getHistoricalPrice = trpc.useQuery(['getHistoricalPrice', { fromSymbol, toSymbol: 'USD' }], { suspense: true });

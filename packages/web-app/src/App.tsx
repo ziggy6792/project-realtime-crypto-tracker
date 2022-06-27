@@ -1,22 +1,12 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import superjson from 'superjson';
+import { FromSymbol, Price } from '@gsg-code-assignment/api-server';
 import { trpc } from './trpc';
 import { HistoricalPrice } from './components/historical-price';
 
 const client = new QueryClient();
-
-// ToDo infer this later
-export type FromSymbol = 'BTC' | 'ETH';
-
-export type ToSymbol = 'USD';
-
-export interface Price {
-  fromSymbol: FromSymbol;
-  toSymbol: ToSymbol;
-  ammount: number;
-}
 
 type PriceDisaplay = { [key in FromSymbol]: Price };
 
