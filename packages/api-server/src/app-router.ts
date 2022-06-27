@@ -2,7 +2,7 @@ import * as trpc from '@trpc/server';
 import superjson from 'superjson';
 import { ee } from './utils/event-emiter';
 import * as cryptocompareService from './services/cryptocompare-api';
-import { getHisoricalDataValidator } from './validators/validators';
+import { getHisoricalDataRequestValidator } from './validators';
 import { Price } from './domain-models/price';
 import { getHisoricalDataResponseToHistoricalPrices } from './utils/mapper-util';
 
@@ -28,7 +28,7 @@ export const appRouter = trpc
     },
   })
   .query('getHistoricalPrice', {
-    input: getHisoricalDataValidator,
+    input: getHisoricalDataRequestValidator,
     async resolve({ input }) {
       const apiResponse = await cryptocompareService.getHisoricalData(input);
       const historicalPrices = getHisoricalDataResponseToHistoricalPrices(apiResponse, input.fromSymbol, input.toSymbol);
