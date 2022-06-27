@@ -29,25 +29,23 @@ const AppContent: React.FC = () => {
   return (
     <div>
       {priceDisaplayOrder.map((fromSymbol) => (
-        <>
-          <div key={fromSymbol}>
-            <h3>{getTitle(fromSymbol)}</h3>
-          </div>
+        <div key={fromSymbol}>
+          <h3>{getTitle(fromSymbol)}</h3>
           <HistoricalPrice fromSymbol={fromSymbol} />
-        </>
+        </div>
       ))}
     </div>
   );
 };
 
 const wsClient = createWSClient({
-  url: `ws://localhost:3001`,
+  url: process.env.REACT_APP_API_GSG_INTERNAL_WS_URL,
 });
 
 const App = () => {
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: 'http://localhost:8080/trpc',
+      url: process.env.REACT_APP_API_GSG_INTERNAL_URL,
       links: [
         wsLink({
           client: wsClient,
