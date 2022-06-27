@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getHisoricalDataValidator } from 'src/validators/validators';
 import { z } from 'zod';
 
-const cryptocompareRestApi = axios.create({ baseURL: 'https://min-api.cryptocompare.com/data/v2' });
+const cryptocompareRestApi = axios.create({ baseURL: process.env.API_CRYPTOCOMPARE_URL });
 
 type GetHisoricalDataRequest = z.infer<typeof getHisoricalDataValidator>;
 

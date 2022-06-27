@@ -60,8 +60,8 @@ const getConnection = (connectionString: string) =>
     });
   }) as Promise<Connection>;
 
-// ToDo: Config
-const API_KEY = '803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133';
+// ToDo: Provie types for process.env
+const API_KEY = process.env.API_CRYPTOCOMPARE_API_KEY;
 
 interface ISetupConnectionArgs {
   onUpdatePrice: (data: PriceUpdateWsEvent) => void;
@@ -69,13 +69,13 @@ interface ISetupConnectionArgs {
 }
 
 export const setupConnection = async ({ onUpdatePrice, subsciptions = ['5~CCCAGG~BTC~USD', '5~CCCAGG~ETH~USD'] }: ISetupConnectionArgs) => {
-  connection = await getConnection(`wss://streamer.cryptocompare.com/v2?api_key=${API_KEY}`);
+  connection = await getConnection(`${process.env.API_CRYPTOCOMPARE_WS_URL}?api_key=${API_KEY}`);
 
   connection.on('error', (error) => {
     console.log(`Connection Error: ${error.toString()}`);
   });
   connection.on('close', () => {
-    console.log('echo-protocol Connection Closed');
+    console.log('Connection Closed');
   });
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
@@ -83,7 +83,6 @@ export const setupConnection = async ({ onUpdatePrice, subsciptions = ['5~CCCAGG
       if (data.TYPE === WsEventType.PRICE_UPDATE) {
         // I'm not sure why but sometimes update happens with no price
         if (data.PRICE) {
-          // ToDo: Add to util
           onUpdatePrice(data);
         }
       }
