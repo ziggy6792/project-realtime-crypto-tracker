@@ -38,17 +38,15 @@ const AppContent: React.FC = () => {
   );
 };
 
-const wsClient = createWSClient({
-  url: process.env.REACT_APP_API_GSG_INTERNAL_WS_URL,
-});
-
 const App = () => {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       url: process.env.REACT_APP_API_GSG_INTERNAL_URL,
       links: [
         wsLink({
-          client: wsClient,
+          client: createWSClient({
+            url: process.env.REACT_APP_API_GSG_INTERNAL_WS_URL,
+          }),
         }),
       ],
       transformer: superjson,
