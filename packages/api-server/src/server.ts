@@ -5,7 +5,7 @@ import ws from 'ws';
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
 import { closeConnection, setupConnection } from './services/cryptocompare-ws';
 import { appRouter } from './app-router';
-import { ee } from './events';
+import { ee } from './utils/event-emiter';
 import { Price } from './domain-models/price';
 import { priceUpdateWsEventToPrice } from './utils/mapper-util';
 

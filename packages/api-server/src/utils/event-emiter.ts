@@ -1,5 +1,5 @@
 import { EventEmitter } from 'ws';
-import { Price } from './domain-models/price';
+import { Price } from 'src/domain-models/price';
 
 interface MyEvents {
   updatePrice: (data: Price) => void;

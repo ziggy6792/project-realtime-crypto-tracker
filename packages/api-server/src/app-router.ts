@@ -1,6 +1,6 @@
 import * as trpc from '@trpc/server';
 import superjson from 'superjson';
-import { ee } from './events';
+import { ee } from './utils/event-emiter';
 import * as cryptocompareService from './services/cryptocompare-api';
 import { getHisoricalDataValidator } from './validators/validators';
 import { Price } from './domain-models/price';
