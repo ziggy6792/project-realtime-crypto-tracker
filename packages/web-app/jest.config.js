@@ -13,6 +13,6 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|scss)$': 'identity-obj-proxy',
   },
-  setupFilesAfterEnv: ['./src/utils/setup-tests.ts'],
+  setupFilesAfterEnv: ['./src/test-utils/setup-tests.ts'],
   testEnvironment: 'jsdom',
 };
