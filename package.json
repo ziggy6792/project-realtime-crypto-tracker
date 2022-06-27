@@ -24,8 +24,6 @@
     "jest": "^28.1.1",
     "lerna": "^5.1.5",
     "prettier-eslint": "^15.0.1",
-    "ts-jest": "^28.0.5",
-    "tsconfig-paths-jest": "^0.0.1",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "babel-jest": "^28.1.1"
   },

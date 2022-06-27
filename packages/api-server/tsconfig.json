@@ -1,11 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "strict": true /* Enable all strict type-checking options. */,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "declaration": true,
     "rootDir": "src",
     "baseUrl": ".",
-    "outDir": "dist/" /* Redirect output structure to the directory. */
+    "outDir": "dist/"
   }
 }
