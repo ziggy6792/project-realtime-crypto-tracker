@@ -24,14 +24,14 @@ describe('Profile Screen', () => {
     await ws.connected;
 
     await expect(ws).toReceiveMessage({
-      id: 1,
+      id: 3,
       jsonrpc: '2.0',
       method: 'subscription',
       params: { input: { json: null, meta: { values: ['undefined'] } }, path: 'onUpdatePrice' },
     });
 
-    ws.send({ id: 1, result: { type: 'data', data: { json: { fromSymbol: 'ETH', toSymbol: 'USD', ammount: 1202.08 } } } });
-    ws.send({ id: 1, result: { type: 'data', data: { json: { fromSymbol: 'BTC', toSymbol: 'USD', ammount: 20910.92 } } } });
+    ws.send({ id: 3, result: { type: 'data', data: { json: { fromSymbol: 'ETH', toSymbol: 'USD', ammount: 1202.08 } } } });
+    ws.send({ id: 3, result: { type: 'data', data: { json: { fromSymbol: 'BTC', toSymbol: 'USD', ammount: 20910.92 } } } });
 
     expect(screen.getByText(/ETH 1,202.08 USD/i)).toBeInTheDocument();
     expect(screen.getByText(/BTC 20,910.92 USD/i)).toBeInTheDocument();
