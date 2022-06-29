@@ -7,68 +7,18 @@ import { loggerLink } from '@trpc/client/links/loggerLink';
 import { httpLink } from '@trpc/client/links/httpLink';
 import { splitLink } from '@trpc/client/links/splitLink';
 import { trpc } from './trpc';
-import { HistoricalPrice } from './components/historical-price';
+import DashboardSceeen from './screens/dashboard-screen';
+import { useTrpcClient } from './hooks/useTrpcClient';
 
 const client = new QueryClient();
 
-type PriceDisaplay = { [key in FromSymbol]: Price };
-
-const priceDisaplayOrder: FromSymbol[] = ['BTC', 'ETH'];
-
-const AppContent: React.FC = () => {
-  const [realtimePrices, setRealtimePrices] = useState<PriceDisaplay>({} as PriceDisaplay);
-
-  trpc.useSubscription(['onUpdatePrice'], {
-    onNext(data) {
-      setRealtimePrices((currVal) => ({ ...currVal, [data.fromSymbol]: data }));
-    },
-  });
-
-  const getTitle = (fromSymbol: FromSymbol) => {
-    if (!realtimePrices[fromSymbol]) return fromSymbol;
-    return `${fromSymbol} ${realtimePrices[fromSymbol].ammount.toLocaleString()} ${realtimePrices[fromSymbol].toSymbol}`;
-  };
-
-  return (
-    <div>
-      {priceDisaplayOrder.map((fromSymbol) => (
-        <div key={fromSymbol}>
-          <h3>{getTitle(fromSymbol)}</h3>
-          <HistoricalPrice fromSymbol={fromSymbol} />
-        </div>
-      ))}
-    </div>
-  );
-};
-
 const App = () => {
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      links: [
-        // call subscriptions through websockets and the rest over http
-        loggerLink({ enabled: () => true }),
-        splitLink({
-          condition(op) {
-            return op.type === 'subscription';
-          },
-          true: wsLink({
-            client: createWSClient({
-              url: process.env.REACT_APP_API_GSG_INTERNAL_WS_URL,
-            }),
-          }),
-          false: httpLink({
-            url: process.env.REACT_APP_API_GSG_INTERNAL_URL,
-          }),
-        }),
-      ],
-      transformer: superjson,
-    })
-  );
+  const trpcClient = useTrpcClient();
 
   return (
     <trpc.Provider client={trpcClient} queryClient={client}>
       <QueryClientProvider client={client}>
-        <AppContent />
+        <DashboardSceeen />
       </QueryClientProvider>
     </trpc.Provider>
   );

@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import WS from 'jest-websocket-mock';
-import App from './app';
+import { renderWithAllProviders } from 'src/test-utils/test-utils';
+import DashboardSceeen from './dashboard-screen';
 
 let ws: WS;
 beforeEach(() => {
@@ -19,14 +20,14 @@ afterEach(() => {
 });
 
 describe('Profile Screen', () => {
-  it('renders', async () => {
-    render(<App />);
+  it.only('renders', async () => {
+    renderWithAllProviders(<DashboardSceeen />);
     const linkElement = screen.getByText(/BTC/);
     expect(linkElement).toBeInTheDocument();
   });
 
-  it.only('renders realtime values', async () => {
-    render(<App />);
+  it('renders realtime values', async () => {
+    render(<DashboardSceeen />);
 
     await ws.connected;
 
