@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import WS from 'jest-websocket-mock';
 import { renderWithAllProviders } from 'src/test-utils/test-utils';
 import DashboardSceeen from './dashboard-screen';
@@ -16,22 +16,27 @@ beforeEach(() => {
   });
 });
 afterEach(() => {
+  ws.close();
   WS.clean();
 });
 
 describe('Profile Screen', () => {
-  it.only('renders', async () => {
+  it('renders', async () => {
     renderWithAllProviders(<DashboardSceeen />);
     const linkElement = screen.getByText(/BTC/);
     expect(linkElement).toBeInTheDocument();
   });
 
   it('renders realtime values', async () => {
-    render(<DashboardSceeen />);
+    renderWithAllProviders(<DashboardSceeen />);
+
+    console.log('messages start', ws.messages);
 
     await ws.connected;
 
     await ws.nextMessage;
+
+    console.log('messages end', ws.messages);
 
     expect(screen.getByText(/ETH 1,202.08 USD/i)).toBeInTheDocument();
     expect(screen.getByText(/BTC 20,910.92 USD/i)).toBeInTheDocument();

@@ -9,21 +9,10 @@ type IRenderWithApiOptions = Omit<RenderOptions, 'queries'> & {
   queryClientConfig?: QueryClientConfig;
 };
 
-const createTestQueryClient = (queryClientConfig: QueryClientConfig) => new QueryClient(queryClientConfig);
-
 export const renderWithAllProviders = (ui: React.ReactElement, customOptions: IRenderWithApiOptions = {}) => {
-  const {
-    queryClientConfig = {
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
-      },
-    },
-    ...renderOptions
-  } = customOptions;
+  const { queryClientConfig = {}, ...renderOptions } = customOptions;
 
-  const client = createTestQueryClient(queryClientConfig);
+  const client = new QueryClient(queryClientConfig);
 
   const AllTheProviders: React.FC<{ children: React.ReactElement }> = ({ children }) => {
     // It would be nice it Trpc made a mock provider, instead I used the real client and mock the rest/ws requests/responses

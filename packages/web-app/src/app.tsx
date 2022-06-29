@@ -1,11 +1,5 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
-import superjson from 'superjson';
-import { FromSymbol, Price } from '@gsg-code-assignment/api-server';
-import { loggerLink } from '@trpc/client/links/loggerLink';
-import { httpLink } from '@trpc/client/links/httpLink';
-import { splitLink } from '@trpc/client/links/splitLink';
 import { trpc } from './trpc';
 import DashboardSceeen from './screens/dashboard-screen';
 import { useTrpcClient } from './hooks/useTrpcClient';
