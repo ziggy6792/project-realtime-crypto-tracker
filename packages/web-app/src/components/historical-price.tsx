@@ -11,7 +11,7 @@ interface IHistoricalPriceProps {
 const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) => {
   const getHistoricalPrice = trpc.useQuery(['getHistoricalPrice', { fromSymbol, toSymbol: 'USD' }], { suspense: true });
 
-  const { data } = getHistoricalPrice;
+  const { data, error } = getHistoricalPrice;
 
   const chartData = useMemo(() => {
     if (data) {
@@ -19,6 +19,8 @@ const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) =
     }
     return [];
   }, [data]);
+
+  if (error) return <div>{error.message}</div>;
 
   return (
     <LineChart width={1200} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 25, left: 40 }}>
