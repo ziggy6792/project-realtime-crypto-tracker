@@ -23,7 +23,7 @@ const HistoricalPriceChart: React.FC<IHistoricalPriceProps> = ({ fromSymbol }) =
 
   // https://github.com/recharts/recharts/issues/953#issuecomment-506772381
   const { min, max } = useMemo(
-    () => ({ min: _.min(data?.map((d) => d.price.ammount)) as number, max: _.max(data?.map((d) => d.price.ammount)) as number as number }),
+    () => ({ min: _.min(data?.map((d) => d.price.ammount)) as number, max: _.max(data?.map((d) => d.price.ammount)) as number }),
     [data]
   );
 
