@@ -12,6 +12,8 @@ describe('Historical Price', () => {
     await waitFor(() => {
       expect(screen.getByText(/Price in USD/)).toBeInTheDocument();
     });
+    // Mock result shows from 2pm - 2pm next day
+    expect(screen.getAllByText(/14:00/)).toHaveLength(2);
   });
   it('shows error on api errror', async () => {
     server.use(rest.get(`${process.env.REACT_APP_API_GSG_INTERNAL_URL}/getHistoricalPrice`, (req, res, ctx) => res(ctx.json({ error: 'error' }))));
