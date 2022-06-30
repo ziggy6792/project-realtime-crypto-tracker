@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import WS from 'jest-websocket-mock';
-import { renderWithAllProviders } from 'src/test-utils/test-utils';
+import { renderWithAllProviders } from 'src/test-utils/render-test-utils';
 import DashboardSceeen from './dashboard-screen';
 
 let ws: WS;

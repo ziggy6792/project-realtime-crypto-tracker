@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
-import { renderWithAllProviders } from 'src/test-utils/test-utils';
+import { renderWithAllProviders } from 'src/test-utils/render-test-utils';
 import { server } from 'src/test-utils/mocks/server';
 import { rest } from 'msw';
 import { HistoricalPrice } from './historical-price';

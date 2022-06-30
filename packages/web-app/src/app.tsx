@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { trpc } from './trpc';
 import DashboardSceeen from './screens/dashboard-screen';
-import { useTrpcClient } from './hooks/useTrpcClient';
+import { useTrpcClient } from './hooks/use-trpc-client';
 import ErrorWrapper from './error-wrapper';
 
 const client = new QueryClient();
