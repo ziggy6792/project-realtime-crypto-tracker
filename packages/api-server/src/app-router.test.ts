@@ -397,25 +397,35 @@ const expectedResponse = [
   },
 ];
 
-// const mockGetHisoricalData = jest.spyOn(cryptocompareApi, 'getHisoricalData').mockResolvedValue(mockResponse);
-const mockGetHisoricalData = jest.spyOn(cryptocompareApi, 'getHisoricalData').mockRejectedValue('go away');
+const mockValdInput = { fromSymbol: 'ETH', toSymbol: 'USD' } as cryptocompareApi.GetHisoricalDataRequest;
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('App Router', () => {
   it('getHistoricalPrice gets historical price', async () => {
-    const actualResponse = await testCaller.query('getHistoricalPrice', { fromSymbol: 'ETH', toSymbol: 'USD' });
-    expect(mockGetHisoricalData).toHaveBeenLastCalledWith({ fromSymbol: 'ETH', toSymbol: 'USD' });
+    const mockGetHisoricalData = jest.spyOn(cryptocompareApi, 'getHisoricalData').mockResolvedValue(mockResponse);
+
+    const actualResponse = await testCaller.query('getHistoricalPrice', mockValdInput);
+    expect(mockGetHisoricalData).toHaveBeenLastCalledWith(mockValdInput);
     expect(actualResponse).toEqual(expectedResponse);
   });
+
   it('getHistoricalPrice does not accept invalid input', async () => {
     const sendInvalidInput = async () => {
-      const actualResponse = await testCaller.query('getHistoricalPrice', { fromSymbol: 'ETH', toSymbol: 'NOOPE' } as any);
+      await testCaller.query('getHistoricalPrice', { fromSymbol: 'ETH', toSymbol: 'NOOPE' } as any);
     };
     await expect(sendInvalidInput()).rejects.toThrow(`Invalid enum value. Expected 'USD', received 'NOOPE'`);
   });
-  it.only('getHistoricalPrice does not accept invalid input', async () => {
-    const sendInvalidInput = async () => {
-      const actualResponse = await testCaller.query('getHistoricalPrice', { fromSymbol: 'ETH', toSymbol: 'USD' });
+
+  // This test is a bit useless. Really I should call over rest and assert that I get a 500
+  // Trpc does map this error for a 500 response for me
+  it('getHistoricalPrice throws error if the downstream service does', async () => {
+    jest.spyOn(cryptocompareApi, 'getHisoricalData').mockRejectedValue('downstream service error');
+    const callService = async () => {
+      await testCaller.query('getHistoricalPrice', mockValdInput);
     };
-    await expect(sendInvalidInput()).rejects.toThrow(`Invalid enum value. Expected 'USD', received 'NOOPE'`);
+    await expect(callService()).rejects.toThrow(`downstream service error`);
   });
 });

@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 const cryptocompareRestApi = axios.create({ baseURL: process.env.API_CRYPTOCOMPARE_URL });
 
-type GetHisoricalDataRequest = z.infer<typeof getHisoricalDataRequestValidator>;
+export type GetHisoricalDataRequest = z.infer<typeof getHisoricalDataRequestValidator>;
 
 export interface GetHisoricalDataResponse {
   Response: string;
