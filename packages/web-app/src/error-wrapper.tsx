@@ -5,7 +5,12 @@ interface IErrorFallbackProps {
   error: Error;
 }
 
-const ErrorFallback: React.FC<IErrorFallbackProps> = ({ error }) => <div>{JSON.stringify(error)}</div>;
+const ErrorFallback: React.FC<IErrorFallbackProps> = ({ error }) => (
+  <>
+    <div>Oh no something went wrong!</div>
+    <div>{JSON.stringify(error)}</div>
+  </>
+);
 
 const ErrorWrapper: React.FC<PropsWithChildren<unknown>> = ({ children }) => <ErrorBoundary FallbackComponent={ErrorFallback}>{children}</ErrorBoundary>;
 

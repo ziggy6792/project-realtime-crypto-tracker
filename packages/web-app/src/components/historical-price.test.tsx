@@ -13,13 +13,13 @@ describe('Historical Price', () => {
       expect(screen.getByText(/Price in USD/)).toBeInTheDocument();
     });
   });
-  it.only('shows error', async () => {
+  it('shows error', async () => {
     server.use(rest.get(`${process.env.REACT_APP_API_GSG_INTERNAL_URL}/getHistoricalPrice`, (req, res, ctx) => res(ctx.json({ error: 'error' }))));
 
     renderWithAllProviders(<HistoricalPrice fromSymbol='BTC' />);
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
     await waitFor(() => {
-      expect(screen.getByText(/Price in USD/)).toBeInTheDocument();
+      expect(screen.getByText(/Oh no something went wrong!/)).toBeInTheDocument();
     });
   });
 });
