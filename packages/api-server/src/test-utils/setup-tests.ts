@@ -1,3 +1,1 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
-console.log('setup');
+// Test setup goes here

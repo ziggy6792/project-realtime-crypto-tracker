@@ -8,13 +8,15 @@ import { appRouter } from './app-router';
 import { ee } from './utils/event-emiter';
 import { priceUpdateWsEventToPrice } from './utils/mapper-util';
 
+const apiPort = 4000;
+const wsPort = 4001;
+
 const createContext = () => null;
 
 export const setupServer = () => {
   const app = express();
 
   app.use(cors());
-  const port = 8080;
 
   app.use(
     '/trpc',
@@ -28,14 +30,14 @@ export const setupServer = () => {
     res.send('Hello from api-server');
   });
 
-  const expressServer = app.listen(port, () => {
-    console.log(`api-server listening at http://localhost:${port}`);
+  const expressServer = app.listen(apiPort, () => {
+    console.log(`api-server listening at http://localhost:${apiPort}`);
   });
 
   // Create WebSocket
 
   const wss = new ws.Server({
-    port: 3001,
+    port: wsPort,
   });
   const handler = applyWSSHandler({ wss, router: appRouter, createContext });
 
@@ -46,7 +48,7 @@ export const setupServer = () => {
     });
   });
 
-  console.log('✅ WebSocket Server listening on ws://localhost:3001');
+  console.log(`WebSocket Server listening on ws://localhost:${wsPort}`);
 
   setupConnection({
     onUpdatePrice: (data) => {
