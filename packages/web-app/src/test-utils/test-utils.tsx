@@ -4,13 +4,21 @@ import { render, RenderOptions } from '@testing-library/react';
 import { QueryClient, QueryClientConfig, QueryClientProvider } from 'react-query';
 import { useTrpcClient } from 'src/hooks/useTrpcClient';
 import { trpc } from 'src/trpc';
+import ErrorWrapper from 'src/error-wrapper';
 
 type IRenderWithApiOptions = Omit<RenderOptions, 'queries'> & {
   queryClientConfig?: QueryClientConfig;
 };
 
 export const renderWithAllProviders = (ui: React.ReactElement, customOptions: IRenderWithApiOptions = {}) => {
-  const { queryClientConfig = {}, ...renderOptions } = customOptions;
+  const {
+    queryClientConfig = {
+      defaultOptions: {
+        queries: { retry: false },
+      },
+    },
+    ...renderOptions
+  } = customOptions;
 
   const client = new QueryClient(queryClientConfig);
 
@@ -19,9 +27,11 @@ export const renderWithAllProviders = (ui: React.ReactElement, customOptions: IR
     const trpcClient = useTrpcClient();
 
     return (
-      <trpc.Provider client={trpcClient} queryClient={client}>
-        <QueryClientProvider client={client}>{children}</QueryClientProvider>
-      </trpc.Provider>
+      <ErrorWrapper>
+        <trpc.Provider client={trpcClient} queryClient={client}>
+          <QueryClientProvider client={client}>{children}</QueryClientProvider>
+        </trpc.Provider>
+      </ErrorWrapper>
     );
   };
 
