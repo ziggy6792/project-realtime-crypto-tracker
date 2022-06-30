@@ -403,7 +403,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('App Router', () => {
+describe('getHistoricalPrice', () => {
   it('getHistoricalPrice gets historical price', async () => {
     const mockGetHisoricalData = jest.spyOn(cryptocompareApi, 'getHisoricalData').mockResolvedValue(mockResponse);
 
