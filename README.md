@@ -30,12 +30,12 @@ Fronent: I used Create React App because it is standard and simple to setup
 
 I implemented the frontend and backend in one monoreposiry
 
-Advantages;
+## Advantages
 
-- Shared config for tests/lint/typescript
-- Developers should get better holistic view of the application and feel responsible for all parts (i.e: backend devs can more easily see if they are breaking frontend features and feel responsible for getting these issues fixed)
+- Shared config for tests, lint and typescript
+- Developers should get better holistic view of the application and feel responsible for all parts (i.e: backend devs can more easily see if they are breaking frontend features and feel responsible for fixing those issues)
 - Necessary for https://trpc.io/
-- Backend and frontend developed in one repository means its easier to go 'back in time' to previous app versions or create different versions
+- Backend and frontend developed in one repository means it's easier to go 'back in time' to previous app versions or create different versions
 
 Note: This application has 1 dashboard screen for now. But for more screens I would use React Router
 
