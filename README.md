@@ -26,7 +26,8 @@ I assume that the api is for internal use only and there is 1 fullstack team for
 # Decisions
 
 Backend: I used https://trpc.io/ which allows you to easily build & consume fully typesafe APIs, without schemas or code generation
-Fronent: I used Create React App because it is standard and simple to setup
+
+Frontend: I used Create React App because it is standard and simple to setup
 
 I implemented the frontend and backend in one monoreposiry
 
@@ -42,5 +43,7 @@ Note: This application has 1 dashboard screen for now. But for more screens I wo
 # Next steps
 
 Docker file to containerize backend
+
 Make things look pretty (e.g: Add MUI or other design system to frontend)
+
 I didn't have time to write tests for `packages/api-server/src/routers/on-update-price.ts` but it would look very similar to `packages/api-server/src/routers/get-historical-price.test.ts`
