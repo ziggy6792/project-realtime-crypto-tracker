@@ -4,8 +4,15 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "declaration": true,
-    "rootDir": "src",
-    "baseUrl": ".",
-    "outDir": "dist/"
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {},
+    "allowSyntheticDefaultImports": true,
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      }
+    ]
   }
 }
