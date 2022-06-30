@@ -2,8 +2,6 @@
 import * as cryptocompareApi from 'src/services/cryptocompare-api';
 import { appRouter } from './app-router';
 
-const testCaller = appRouter.createCaller({});
-
 const mockResponse = {
   Response: 'Success',
   Message: '',
@@ -396,6 +394,8 @@ const expectedResponse = [
     price: { fromSymbol: 'ETH', toSymbol: 'USD', ammount: 20051.91 },
   },
 ];
+
+const testCaller = appRouter.createCaller({});
 
 const mockValdInput = { fromSymbol: 'ETH', toSymbol: 'USD' } as cryptocompareApi.GetHisoricalDataRequest;
 
