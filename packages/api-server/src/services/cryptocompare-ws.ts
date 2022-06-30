@@ -61,7 +61,6 @@ const getConnection = (connectionString: string) =>
     });
   }) as Promise<Connection>;
 
-// ToDo: Provie types for process.env
 const API_KEY = process.env.API_CRYPTOCOMPARE_API_KEY;
 
 interface ISetupConnectionArgs {
