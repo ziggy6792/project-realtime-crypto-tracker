@@ -29,7 +29,7 @@ Backend: I used https://trpc.io/ which allows you to easily build & consume full
 
 Frontend: I used Create React App because it is standard and simple to setup
 
-I implemented the frontend and backend in one monoreposiry
+I implemented the frontend and backend together a monoreposiry
 
 ## Advantages
 
