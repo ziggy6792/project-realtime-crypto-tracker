@@ -2,7 +2,7 @@
 import * as trpc from '@trpc/server';
 import { ee } from 'src/utils/event-emiter';
 import { Price } from 'src/domain-models/price';
-import { createRouter } from 'src/createRouter';
+import { createRouter } from 'src/create-router';
 
 export const updatePriceRouter = createRouter().subscription('onUpdatePrice', {
   resolve() {

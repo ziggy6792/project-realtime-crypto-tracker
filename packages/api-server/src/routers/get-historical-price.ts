@@ -2,7 +2,7 @@
 import * as cryptocompareService from 'src/services/cryptocompare-api';
 import { getHisoricalDataRequestValidator } from 'src/validators';
 import { getHisoricalDataResponseToHistoricalPrices } from 'src/utils/mapper-util';
-import { createRouter } from 'src/createRouter';
+import { createRouter } from 'src/create-router';
 
 export const historicalPriceRouter = createRouter().query('getHistoricalPrice', {
   input: getHisoricalDataRequestValidator,
