@@ -4,11 +4,20 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
+import './mock-env';
 import '@testing-library/jest-dom';
 // For async tests
 import 'regenerator-runtime/runtime';
+import { server } from './mocks/server';
 
-require('jest-fetch-mock').enableMocks();
+require('isomorphic-fetch');
 
-process.env.REACT_APP_API_GSG_INTERNAL_URL = 'http://mock/api';
-process.env.REACT_APP_API_GSG_INTERNAL_WS_URL = 'ws://mock/websocket';
+beforeAll(() => {
+  // Enable the mocking in tests.
+  server.listen();
+});
+
+afterEach(() => {
+  // Reset any runtime handlers tests may use.
+  server.resetHandlers();
+});

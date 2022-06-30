@@ -23,8 +23,7 @@ afterEach(() => {
 describe('Dashboard Screen', () => {
   it('renders', async () => {
     renderWithAllProviders(<DashboardSceeen />);
-    const linkElement = screen.getByText(/BTC/);
-    expect(linkElement).toBeInTheDocument();
+    expect(screen.getByText(/BTC/)).toBeInTheDocument();
 
     await ws.connected;
 
