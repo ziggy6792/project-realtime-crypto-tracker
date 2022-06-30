@@ -7,6 +7,7 @@ import { closeConnection, setupConnection } from './services/cryptocompare-ws';
 import { appRouter } from './app-router';
 import { ee } from './utils/event-emiter';
 import { priceUpdateWsEventToPrice } from './utils/mapper-util';
+import { log } from './utils/logger';
 
 const apiPort = 4000;
 const wsPort = 4001;
@@ -31,7 +32,7 @@ export const setupServer = () => {
   });
 
   const expressServer = app.listen(apiPort, () => {
-    console.log(`api-server listening at http://localhost:${apiPort}`);
+    log.info(`api-server listening at http://localhost:${apiPort}`);
   });
 
   // Create WebSocket
@@ -42,13 +43,14 @@ export const setupServer = () => {
   const handler = applyWSSHandler({ wss, router: appRouter, createContext });
 
   wss.on('connection', (ws) => {
-    console.log(`Connection (${wss.clients.size})`);
+    log.info(`Connection (${wss.clients.size})`);
+
     ws.once('close', () => {
-      console.log(`Connection (${wss.clients.size})`);
+      log.info(`Connection (${wss.clients.size})`);
     });
   });
 
-  console.log(`WebSocket Server listening on ws://localhost:${wsPort}`);
+  log.info(`WebSocket Server listening on ws://localhost:${wsPort}`);
 
   setupConnection({
     onUpdatePrice: (data) => {
@@ -57,7 +59,7 @@ export const setupServer = () => {
   });
 
   process.on('SIGINT', () => {
-    console.log('Got SIGINT. Press Control-C to exit.');
+    log.info('Got SIGINT. Press Control-C to exit.');
     handler.broadcastReconnectNotification();
     wss.close();
     expressServer.close();

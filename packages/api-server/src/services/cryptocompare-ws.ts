@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { log } from 'src/utils/logger';
 import { client as WebSocketClient, connection as Connection } from 'websocket';
 
 enum WsEventType {
@@ -51,11 +52,11 @@ const getConnection = (connectionString: string) =>
     const client = new WebSocketClient();
     client.connect(connectionString);
     client.on('connect', (connection) => {
-      console.log('WebSocket Client Connected');
+      log.info('WebSocket Client Connected');
       resolve(connection);
     });
     client.on('connectFailed', (error) => {
-      console.log(`Connect Error: ${error.toString()}`);
+      log.error(`Connect Error: ${error.toString()}`);
       rejeect(error);
     });
   }) as Promise<Connection>;
@@ -72,10 +73,10 @@ export const setupConnection = async ({ onUpdatePrice, subsciptions = ['5~CCCAGG
   connection = await getConnection(`${process.env.API_CRYPTOCOMPARE_WS_URL}?api_key=${API_KEY}`);
 
   connection.on('error', (error) => {
-    console.log(`Connection Error: ${error.toString()}`);
+    log.error(`Connection Error: ${error.toString()}`);
   });
   connection.on('close', () => {
-    console.log('Connection Closed');
+    log.info('Connection Closed');
   });
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
