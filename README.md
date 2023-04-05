@@ -1,3 +1,27 @@
+# Realtime Crypto Tracker
+
+Write a simple and state-of-the-art web application which exposes the real time market data in USD for the two cryptocurrencies BTC and ETH for potential investors.
+
+Investors additionally want to see how the market price has developed historically over the last 24 hours.
+
+## Guidelines
+
+- You are provided a 3rd party API that provides the market data.
+- Make sure the code you deliver is what you would be comfortable deploying and maintaining **in production**!
+
+## Market Data Provider
+
+You are encouraged to get the real market data from the CryptoCompare 3rd party API.
+Please find their API documentation [here](https://min-api.cryptocompare.com/documentation).
+
+Here's an example to get the historical market price for a specified currency:
+
+> https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USDC
+
+Please use the following API key from CryptoCompare in case it is required:
+
+> 803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133
+
 ## Getting Started
 
 - `yarn install`
