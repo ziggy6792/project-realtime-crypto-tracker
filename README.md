@@ -18,9 +18,9 @@ Here's an example to get the historical market price for a specified currency:
 
 > https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USDC
 
-Please use the following API key from CryptoCompare in case it is required:
+You may need to generate a free api key
 
-> 803c94d04602d67745b502400692d6d662240a7f37e5c7e9d72b64f74d3dd133
+> https://www.cryptocompare.com/coins/guides/how-to-use-our-api/
 
 ## Getting Started
 
