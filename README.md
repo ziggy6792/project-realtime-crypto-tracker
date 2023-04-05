@@ -22,6 +22,10 @@ You may need to generate a free api key
 
 > https://www.cryptocompare.com/coins/guides/how-to-use-our-api/
 
+## Demo
+
+![Demo](realtime-crypto-tracker.gif)
+
 ## Getting Started
 
 - `yarn install`
